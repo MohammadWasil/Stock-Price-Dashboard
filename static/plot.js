@@ -1,0 +1,1 @@
+var chart = document.getElementById("Chart").getContext('2d');
