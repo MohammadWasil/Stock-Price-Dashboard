@@ -7,58 +7,33 @@ Chart.defaults.global.defaultFontColor = '#777';
 
 const labels = Array.from(Array(10).keys()) ;
 
-function plotStocks(close, open, high, low, date, time){
+function plotStocks(close, open, high, low, date, time, timeStamp){
 
     // get the unique date fromt he array of dates.
     const unique_date = [...new Set(date)];
     
+    if(time[0] == undefined){
+        console.log("put date");
+        myLabel = date;
+    }
+    else{
+        myLabel = time;
+    }
+
     var stockPriceChart = new Chart(chart, {
         type:'line',
         data:{
-        labels: time,
+        labels: myLabel,
         datasets: [{
             label:"close",
             tension: 0,
             data: close,//.slice(0, 10),
-            //backgroundColor:"white",
+            backgroundColor:"black",
             borderWidth: 2,
             borderColor:'lightblue',
             hoverBorderWidth:3,
-            hoverBorderColor:'black',
-            pointRadius: 0
-        },
-        {
-            label:"open",
-            tension: 0,
-            data: open,
-            //backgroundColor:"white",
-            borderWidth: 2,
-            borderColor:'red',
-            hoverBorderWidth:3,
-            hoverBorderColor:'red',
-            pointRadius: 0
-        },
-        {
-            label:"high",
-            tension: 0,
-            data: high,
-            //backgroundColor:"white",
-            borderWidth: 2,
-            borderColor:'green',
-            hoverBorderWidth:3,
-            hoverBorderColor:'green',
-            pointRadius: 0
-        },
-        {
-            label:"low",
-            tension: 0,
-            data: low,
-            //backgroundColor:"white",
-            borderWidth: 2,
-            borderColor:'yellow',
-            hoverBorderWidth:3,
-            hoverBorderColor:'yellow',
-            pointRadius: 0
+            hoverBorderColor:'black'
+            //pointRadius: 0
         }
     ]
         },
@@ -67,7 +42,7 @@ function plotStocks(close, open, high, low, date, time){
             maintainAspectRatio: false,
             title:{
                 display:true,
-                text:"Stock Price of IBM, dated: " + unique_date,
+                text:"Stock Price of IBM, dated: ",// + unique_date,
                 fontSize:25
             },
          

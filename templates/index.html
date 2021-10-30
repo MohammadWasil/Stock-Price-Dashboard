@@ -11,13 +11,31 @@
     <body>
       <h1>Select the stock price from below:</h1>
       <button id="IBMData">IBM</button>
+      <button id="one_day">Last one Day</button>
+      <button id="last_month">Last month</button>
+      
+      <div>Type the date:</div>
+      <div>
+        <form id="dateString"> 
+          From <input type="text" id="fromDate"> 
+          To <input type="text" id="toDate">
+          <input type="submit" value="submit">
+        </form>
+      </div>
+      
+      
       <div id="message_1"></div>
       <p id="database"></p>
       <br>
       <canvas id="myChart"></canvas>
       
       <script type="text/javascript" src="{{ url_for('static', filename='plot.js') }}"></script>
-      
+
+
+
+
+
+
     </body>
     
  

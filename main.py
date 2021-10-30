@@ -8,12 +8,13 @@ from sqlalchemy.orm import sessionmaker
 import sqlite3
 #import json
 import requests
+import pandas as pd
 
-url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&apikey='   
+# url = 'https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=TSLA&interval=1min&adjested=true&outputsize=full&apikey='   
+url = 'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=TSLA&outputsize=full&apikey='   
 r = requests.get(url)
 
 data = r.json()
-
 #print(data['Meta Data'])
 #print(data['Time Series (5min)'].keys())
 #df = pd.DataFrame(columns=['1. open', '2. high', '3. low', '4. close', '5. volume', 'Timestamp'])
@@ -24,12 +25,12 @@ data = r.json()
 #df.reset_index(inplace = True, drop = True)
 #df.columns = ['open', 'high', 'low', 'close', 'volume', 'Timestamp']
 
-DATABASE_LOCATION = "sqlite:///stock_price.sqlite"
+DATABASE_LOCATION = "sqlite:///stock_price_monthly.sqlite"
 engine = sqlalchemy.create_engine(DATABASE_LOCATION)
-conn = sqlite3.connect("stock_price.sqlite")
+conn = sqlite3.connect("stock_price_monthly.sqlite")
 cursor = conn.cursor()
 
-sql_query = """CREATE TABLE IF NOT EXISTS stock_price(
+sql_query = """CREATE TABLE IF NOT EXISTS stock_price_monthly(
               open FLOAT(50, 4),
               high FLOAT(50, 4),
               low FLOAT(50, 4),
@@ -41,14 +42,15 @@ sql_query = """CREATE TABLE IF NOT EXISTS stock_price(
 cursor.execute(sql_query)
 print("Database opened successfully!")
 
-try:
-    for key, value in data['Time Series (5min)'].items():
-        cursor.execute("""INSERT INTO stock_price VALUES (?, ?, ?, ?, ?, ?)""", 
-                    (float(value['1. open']), float(value['2. high']), float(value['3. low']), float(value['4. close']), float(value['5. volume']), key ))
-        conn.commit()
-    print("Data inserted.")
-except:
-    print("Data already exists")
+#try:
+for key, value in data['Time Series (Daily)'].items():
+    cursor.execute("""INSERT INTO stock_price_monthly VALUES (?, ?, ?, ?, ?, ?)""", 
+                (float(value['1. open']), float(value['2. high']), float(value['3. low']), float(value['4. close']), float(value['5. volume']), key ))
+    conn.commit()
+
+print("Data inserted.")
+#except:
+print("Data already exists")
 
 conn.close()
 print("Database closed successfully")

@@ -1,4 +1,6 @@
-function processData(data){
+var server = "http://127.0.0.1:5000";
+
+function processData(data) {
     //console.log(data['2021-10-25 09:25:00']['close']);
     var close = new Array();
     var open = new Array();
@@ -33,11 +35,10 @@ function processData(data){
         };
 }
 
-var server = "http://127.0.0.1:5000";
 $(function() {
 $("#IBMData").click(function() {
 
-    var appdir = "/retrieveData"
+    var appdir = "/retrieve_data"
     var send_msg = "Clicked";
     console.log(send_msg);
     $('#message_1').html(send_msg);
@@ -58,13 +59,93 @@ $("#IBMData").click(function() {
             var time = values.time;
 
             // This will call in the function plotStocks to plot the stock price.
-            plotStocks(close, open, high, low, date, time);
-
+            plotStocks(close, open, high, low, date, time, timeStamp);
             console.log(close);
             $("#database").val(data);
+    });
+
+});
+});
+
+// /* 1 day before*/
+$(function(){
+    $('#one_day').click(function(){
+        var getOneDayDir = "/get_one_day";
+
+        // request for data
+        $.ajax({
+            type:"POST",
+            url:server+getOneDayDir
+        }).done(function(data){
+            console.log(data);
+
+            var values = processData(data);
+            var close = values.close;
+            var open = values.open;
+            var high = values.high;
+            var low = values.low;
+            var timeStamp = values.timeStamp;
+            var date = values.date;
+            var time = values.time;
+
+            // This will call in the function plotStocks to plot the stock price.
+            plotStocks(close, open, high, low, date, time, timeStamp);
+            console.log(close);
+            $("#database").val(data);
+        })
+    });
+
+});
+
+//last month
+$(function(){
+    $('#last_month').click(function(){
+        var getoneMonthData = "/get_one_month_data"
+
+        $.ajax({
+            type:"POST",
+            url:server+getoneMonthData
+        }).done(function(data){
+            //console.log(data);
+
+            var values = processData(data);
+            var close = values.close;
+            var open = values.open;
+            var high = values.high;
+            var low = values.low;
+            var timeStamp = values.timeStamp;
+            var date = values.date;
+            var time = values.time;
+
+            // This will call in the function plotStocks to plot the stock price.
+            plotStocks(close, open, high, low, date, time, timeStamp);
+            //console.log(close);
+            //$("#database").val(data);
+        })
+
 
     });
-    
-});
 });
 
+$(function(){
+    $("#dateString").submit(function(e){
+
+        console.log("clickeddddd");
+        e.preventDefault();
+        var form = $(this);
+        var getDateFromCal = "get_date_from_cal";
+        $.ajax({
+            type:"POST",
+            url:server+getDateFromCal,
+            
+            data: form.serialize(),
+            success : function(data)
+            {
+                console.log(data);
+            }//,
+            //complete:function(){
+            //    myForm.reset();
+                //}
+        });
+    });
+});
