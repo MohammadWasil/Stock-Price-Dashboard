@@ -13,7 +13,7 @@ function plotStocks(close, open, high, low, date, time, timeStamp){
     const unique_date = [...new Set(date)];
     
     if(time[0] == undefined){
-        console.log("put date");
+        //console.log("put date");
         myLabel = date;
     }
     else{

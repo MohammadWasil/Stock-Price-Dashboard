@@ -128,24 +128,33 @@ $(function(){
 });
 
 $(function(){
-    $("#dateString").submit(function(e){
+    $("#buttonSubmit").submit(function(e){
+        console.log("clicked");
+        //e.preventDefault();
+        var form = $("dateString")[0];
+        var data = new FormData(form);
+        console.log(data);
 
-        console.log("clickeddddd");
-        e.preventDefault();
-        var form = $(this);
-        var getDateFromCal = "get_date_from_cal";
-        $.ajax({
-            type:"POST",
-            url:server+getDateFromCal,
-            
-            data: form.serialize(),
-            success : function(data)
-            {
-                console.log(data);
-            }//,
-            //complete:function(){
-            //    myForm.reset();
-                //}
-        });
+        $("#buttonSubmit").prop("disabled", true);
+        //var getDateFromCal = "/get_date_from_cal";
+
+        //$.ajax({
+        //    type:"POST",
+        //    url: '',
+        //    data: data,
+        //    processData: false,
+        //    contentType: false,
+        //    cache: false,
+        //    timeout: 800000,
+        //    success : function()
+        //    {
+        //        console.log(data);
+        //    }//,
+            //complete:function(data){
+                //form.reset();
+            //    console.log("reset");
+            //    console.log(data);
+            //}
+        //});
     });
 });
