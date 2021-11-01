@@ -122,39 +122,39 @@ $(function(){
             //console.log(close);
             //$("#database").val(data);
         })
-
-
     });
 });
+$(document).ready(
+    function(){
+    $("#buttonSubmit").click(function(event){
+        
+        var form = $("#dateString");
+        var url = form.prop('action');  // server+'/formData'
+        var type = form.prop('method');
+        var formData = new FormData(document.getElementById( "dateString" ));
+        event.preventDefault();
 
-$(function(){
-    $("#buttonSubmit").submit(function(e){
-        console.log("clicked");
-        //e.preventDefault();
-        var form = $("dateString")[0];
-        var data = new FormData(form);
-        console.log(data);
-
-        $("#buttonSubmit").prop("disabled", true);
-        //var getDateFromCal = "/get_date_from_cal";
-
-        //$.ajax({
-        //    type:"POST",
-        //    url: '',
-        //    data: data,
-        //    processData: false,
-        //    contentType: false,
-        //    cache: false,
-        //    timeout: 800000,
-        //    success : function()
-        //    {
-        //        console.log(data);
-        //    }//,
+        $.ajax({
+            type: type,
+            url: url,
+            data: formData,
+            processData: false,
+            contentType: false,
+            //cache: false,
+            //timeout: 800000,
+            success : function(response_data)
+            {
+                console.log(response_data);
+            }//,
             //complete:function(data){
                 //form.reset();
             //    console.log("reset");
             //    console.log(data);
             //}
-        //});
+        }).done(function(){
+            console.log("Done");
+        });
     });
-});
+}
+
+);
